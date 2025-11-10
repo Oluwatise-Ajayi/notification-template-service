@@ -1,98 +1,380 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Notification Template Service API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Overview
+This is a backend service built with NestJS and TypeScript for managing notification templates. It utilizes TypeORM for object-relational mapping with a PostgreSQL database and exposes a RESTful API for complete CRUD functionality.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
+- **NestJS**: A progressive Node.js framework for building efficient, reliable and scalable server-side applications.
+- **TypeORM**: An ORM that can run in NodeJS and can be used with TypeScript and JavaScript.
+- **PostgreSQL**: A powerful, open source object-relational database system.
+- **Docker**: For containerizing the application and its database, ensuring consistent development and deployment environments.
+- **Class Validator**: For robust and declarative validation of request payloads.
+- **NestJS Terminus**: For implementing comprehensive application health checks.
 
-## Description
+## Getting Started
+### Installation
+There are two ways to run this project: using Docker (recommended) or setting it up locally.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**1. Using Docker**
 
-## Project setup
+This is the simplest way to get the service and its database running.
 
-```bash
-$ npm install
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/Oluwatise-Ajayi/notification-template-service.git
+    cd notification-template-service
+    ```
+
+2.  **Build and run with Docker Compose**:
+    ```bash
+    docker-compose up --build
+    ```
+    The API will be available at `http://localhost:3002`.
+
+**2. Local Setup**
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/Oluwatise-Ajayi/notification-template-service.git
+    cd notification-template-service
+    ```
+
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+3.  **Set up Environment Variables**:
+    Create a `.env` file in the root directory and copy the contents from `.env.example`. Adjust the values for your local PostgreSQL instance.
+
+4.  **Run the database**:
+    Ensure you have a PostgreSQL instance running and accessible with the credentials provided in your `.env` file.
+
+5.  **Start the application**:
+    ```bash
+    npm run start:dev
+    ```
+    The API will be available at `http://localhost:3002`.
+
+### Environment Variables
+The following environment variables are required. Create a `.env` file in the project root based on the `.env.example` file.
+
+| Variable      | Description                           | Example                  |
+| ------------- | ------------------------------------- | ------------------------ |
+| `DB_HOST`     | Database host name                    | `localhost`              |
+| `DB_PORT`     | Database port                         | `5433`                   |
+| `DB_USERNAME` | Database username                     | `postgres`               |
+| `DB_PASSWORD` | Database password                     | `postgres`               |
+| `DB_DATABASE` | Database name                         | `template_service`       |
+| `NODE_ENV`    | Application environment               | `development`            |
+| `PORT`        | Port for the API server               | `3002`                   |
+
+## API Documentation
+### Base URL
+`http://localhost:3002`
+
+### Endpoints
+
+#### POST /templates
+Creates a new notification template.
+
+**Request**:
+```json
+{
+  "name": "user-welcome-email",
+  "channel": "email",
+  "subject": "Welcome to Our Platform!",
+  "content": "<h1>Hello {{user_name}}!</h1><p>Welcome and thank you for signing up.</p>",
+  "variables": ["user_name"],
+  "language": "en-US",
+  "version": 1,
+  "is_active": true
+}
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+**Response**:
+```json
+{
+    "success": true,
+    "data": {
+        "name": "user-welcome-email",
+        "channel": "email",
+        "subject": "Welcome to Our Platform!",
+        "content": "<h1>Hello {{user_name}}!</h1><p>Welcome and thank you for signing up.</p>",
+        "variables": ["user_name"],
+        "language": "en-US",
+        "version": 1,
+        "is_active": true,
+        "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "created_at": "2024-05-21T10:00:00.000Z",
+        "updated_at": "2024-05-21T10:00:00.000Z"
+    },
+    "message": "Template created successfully"
+}
 ```
 
-## Run tests
+**Errors**:
+- `400 Bad Request`: Validation error. The request body does not match the required schema.
 
-```bash
-# unit tests
-$ npm run test
+#### GET /templates
+Retrieves a paginated list of all active templates. Supports query parameters for pagination.
 
-# e2e tests
-$ npm run test:e2e
+**Request**:
+Query Parameters:
+- `page` (optional, number, default: 1): The page number to retrieve.
+- `limit` (optional, number, default: 10, max: 100): The number of items per page.
 
-# test coverage
-$ npm run test:cov
+Example: `/templates?page=1&limit=5`
+
+**Response**:
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+            "name": "user-welcome-email",
+            "channel": "email",
+            "subject": "Welcome to Our Platform!",
+            "content": "<h1>Hello {{user_name}}!</h1><p>Welcome and thank you for signing up.</p>",
+            "variables": ["user_name"],
+            "language": "en-US",
+            "version": 1,
+            "is_active": true,
+            "created_at": "2024-05-21T10:00:00.000Z",
+            "updated_at": "2024-05-21T10:00:00.000Z"
+        }
+    ],
+    "message": "Templates retrieved successfully",
+    "meta": {
+        "total": 1,
+        "limit": 10,
+        "page": 1,
+        "total_pages": 1,
+        "has_next": false,
+        "has_previous": false
+    }
+}
 ```
 
-## Deployment
+**Errors**:
+- None specific to this endpoint.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+#### GET /templates/:id
+Retrieves a single template by its UUID.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+**Request**:
+Path Parameter:
+- `id`: The UUID of the template.
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+**Response**:
+```json
+{
+    "success": true,
+    "data": {
+        "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "name": "user-welcome-email",
+        "channel": "email",
+        "subject": "Welcome to Our Platform!",
+        "content": "<h1>Hello {{user_name}}!</h1><p>Welcome and thank you for signing up.</p>",
+        "variables": ["user_name"],
+        "language": "en-US",
+        "version": 1,
+        "is_active": true,
+        "created_at": "2024-05-21T10:00:00.000Z",
+        "updated_at": "2024-05-21T10:00:00.000Z"
+    },
+    "message": "Template retrieved successfully"
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+**Errors**:
+- `404 Not Found`: `Template with ID [id] not found`
 
-## Resources
+#### GET /templates/name/:name
+Retrieves a single active template by its unique name.
 
-Check out a few resources that may come in handy when working with NestJS:
+**Request**:
+Path Parameter:
+- `name`: The unique name of the template (e.g., `user-welcome-email`).
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+**Response**:
+```json
+{
+    "success": true,
+    "data": {
+        "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "name": "user-welcome-email",
+        "channel": "email",
+        "subject": "Welcome to Our Platform!",
+        "content": "<h1>Hello {{user_name}}!</h1><p>Welcome and thank you for signing up.</p>",
+        "variables": ["user_name"],
+        "language": "en-US",
+        "version": 1,
+        "is_active": true,
+        "created_at": "2024-05-21T10:00:00.000Z",
+        "updated_at": "2024-05-21T10:00:00.000Z"
+    },
+    "message": "Template retrieved successfully"
+}
+```
 
-## Support
+**Errors**:
+- `404 Not Found`: `Template with name [name] not found`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### PUT /templates/:id
+Updates an existing template by its UUID.
 
-## Stay in touch
+**Request**:
+Path Parameter:
+- `id`: The UUID of the template to update.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Body (all fields are optional):
+```json
+{
+  "subject": "A Warm Welcome to Our Platform!",
+  "is_active": false
+}
+```
 
-## License
+**Response**:
+```json
+{
+    "success": true,
+    "data": {
+        "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "name": "user-welcome-email",
+        "channel": "email",
+        "subject": "A Warm Welcome to Our Platform!",
+        "content": "<h1>Hello {{user_name}}!</h1><p>Welcome and thank you for signing up.</p>",
+        "variables": ["user_name"],
+        "language": "en-US",
+        "version": 1,
+        "is_active": false,
+        "created_at": "2024-05-21T10:00:00.000Z",
+        "updated_at": "2024-05-21T10:05:00.000Z"
+    },
+    "message": "Template updated successfully"
+}
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**Errors**:
+- `400 Bad Request`: Validation error in the request body.
+- `404 Not Found`: `Template with ID [id] not found`.
+
+#### DELETE /templates/:id
+Deletes a template by its UUID.
+
+**Request**:
+Path Parameter:
+- `id`: The UUID of the template to delete.
+
+**Response**:
+```json
+{
+    "success": true,
+    "message": "Template deleted successfully"
+}
+```
+
+**Errors**:
+- `404 Not Found`: `Template with ID [id] not found`.
+
+#### GET /health
+Performs a comprehensive health check of the service, including database connectivity, memory usage, and disk space.
+
+**Request**:
+No payload.
+
+**Response**:
+```json
+{
+    "status": "ok",
+    "info": {
+        "database": {
+            "status": "up"
+        },
+        "memory_heap": {
+            "status": "up"
+        },
+        "memory_rss": {
+            "status": "up"
+        },
+        "storage": {
+            "status": "up"
+        }
+    },
+    "error": {},
+    "details": {
+        "database": {
+            "status": "up"
+        },
+        "memory_heap": {
+            "status": "up"
+        },
+        "memory_rss": {
+            "status": "up"
+        },
+        "storage": {
+            "status": "up"
+        }
+    }
+}
+```
+
+**Errors**:
+- `503 Service Unavailable`: One or more health checks failed.
+
+#### GET /health/live
+A simple liveness check to confirm the service process is running.
+
+**Request**:
+No payload.
+
+**Response**:
+```json
+{
+    "status": "ok",
+    "info": {
+        "liveness": {
+            "status": "up"
+        }
+    },
+    "error": {},
+    "details": {
+        "liveness": {
+            "status": "up"
+        }
+    }
+}
+```
+
+**Errors**:
+- `503 Service Unavailable`: If the service is not running.
+
+#### GET /health/ready
+A readiness check to confirm the service is ready to accept traffic (e.g., the database is connected).
+
+**Request**:
+No payload.
+
+**Response**:
+```json
+{
+    "status": "ok",
+    "info": {
+        "database": {
+            "status": "up"
+        }
+    },
+    "error": {},
+    "details": {
+        "database": {
+            "status": "up"
+        }
+    }
+}
+```
+
+**Errors**:
+- `503 Service Unavailable`: If the database connection check fails.
