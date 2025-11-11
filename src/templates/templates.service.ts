@@ -51,12 +51,14 @@ export class TemplatesService {
     return template;
   }
 
-  async findByName(name: string): Promise<Template> {
+  async findByName(template_name: string): Promise<Template> {
     const template = await this.templatesRepository.findOne({
-      where: { name, is_active: true },
+      where: { template_name, is_active: true },
     });
     if (!template) {
-      throw new NotFoundException(`Template with name ${name} not found`);
+      throw new NotFoundException(
+        `Template with name ${template_name} not found`,
+      );
     }
     return template;
   }

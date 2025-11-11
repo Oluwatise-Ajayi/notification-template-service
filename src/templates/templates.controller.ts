@@ -21,8 +21,8 @@ export class TemplatesController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() createTemplateDto: CreateTemplateDto) {
-    const template = await this.templatesService.create(createTemplateDto);
+  async create(@Body() create_Template_Dto: CreateTemplateDto) {
+    const template = await this.templatesService.create(create_Template_Dto);
     return {
       success: true,
       data: template,
@@ -31,13 +31,13 @@ export class TemplatesController {
   }
 
   @Get()
-  async findAll(@Query() paginationDto: PaginationDto) {
-    return await this.templatesService.findAll(paginationDto);
+  async findAll(@Query() pagination_Dto: PaginationDto) {
+    return await this.templatesService.findAll(pagination_Dto);
   }
 
-  @Get('name/:name')
-  async findByName(@Param('name') name: string) {
-    const template = await this.templatesService.findByName(name);
+  @Get('name/:template_name')
+  async findByName(@Param('template_name') template_name: string) {
+    const template = await this.templatesService.findByName(template_name);
     return {
       success: true,
       data: template,
@@ -58,9 +58,12 @@ export class TemplatesController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateTemplateDto: UpdateTemplateDto,
+    @Body() update_Template_Dto: UpdateTemplateDto,
   ) {
-    const template = await this.templatesService.update(id, updateTemplateDto);
+    const template = await this.templatesService.update(
+      id,
+      update_Template_Dto,
+    );
     return {
       success: true,
       data: template,

@@ -12,25 +12,25 @@ export class Template {
   id: string;
 
   @Column({ unique: true })
-  name: string;
+  template_name: string;
 
   @Column()
-  channel: string; // 'email' or 'push'
+  channel_type: string; // 'email' or 'push'
 
   @Column({ nullable: true, length: 500 })
-  subject?: string;
+  template_subject?: string;
 
   @Column('text')
-  content: string;
+  template_content: string;
 
   @Column('jsonb', { default: [] })
-  variables: string[]; // e.g., ["user_name", "order_id"]
+  template_variables: string[]; // e.g., ["user_name", "order_id"]
 
   @Column({ default: 'en', length: 10 })
-  language: string;
+  template_language: string;
 
   @Column({ default: 1 })
-  version: number;
+  template_version: number;
 
   @Column({ default: true })
   is_active: boolean;

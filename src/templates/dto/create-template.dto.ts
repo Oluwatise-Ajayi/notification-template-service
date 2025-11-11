@@ -10,32 +10,32 @@ import {
 
 export class CreateTemplateDto {
   @IsString()
-  name: string;
+  template_name: string;
 
   @IsString()
   @IsIn(['email', 'push'])
-  channel: string;
+  channel_type: string;
 
   @IsOptional()
   @IsString()
-  subject?: string;
+  template_subject?: string;
 
   @IsString()
-  content: string;
+  template_content: string;
 
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  variables?: string[];
+  template_variables?: string[];
 
   @IsOptional()
   @IsString()
-  language?: string;
+  template_language?: string;
 
   @IsOptional()
   @IsInt()
   @Min(1)
-  version?: number;
+  template_version?: number;
 
   @IsOptional()
   @IsBoolean()
