@@ -5,6 +5,7 @@ import { TemplatesModule } from './templates/templates.module';
 import { HealthModule } from './health/health.module';
 import { CorrelationIdMiddleware } from './common/middleware/correlation-id.middleware';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { EtcdService } from './common/services/etcd.service';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     TemplatesModule,
     HealthModule,
   ],
+  providers: [EtcdService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
